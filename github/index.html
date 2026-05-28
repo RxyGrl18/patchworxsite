@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Patch Worx · Grid-based quilt patterns, right in your browser</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/patchworx-icon.png" type="image/png">
+
+  <style>
+    :root {
+      --green:        #5F7355;
+      --green-deep:   #3F4E37;
+      --green-soft:   #8EA181;
+      --green-lift:   #6F8A61;
+      --ink-dark:     #243746;
+      --gold:         #F29F05;
+      --cream:        #F2EADA;
+      --sand:         #E4D6BC;
+      --clay:         #C18A6E;
+      --ink:          #1F2923;
+      --muted:        #667066;
+      --border:       #D9DED4;
+      --surface:      #FFFFFF;
+      --bg:           #F5F6F2;
+      --bg-soft:      #FAFBF7;
+      --max:          1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Top nav ─────────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(245, 246, 242, 0.85);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex; align-items: center;
+      padding: 18px 32px;
+      gap: 28px;
+    }
+    .nav-logo { height: 32px; }
+    .nav-links { display: flex; gap: 28px; margin-left: 18px; }
+    .nav-links a {
+      font-size: 14px; color: var(--muted); font-weight: 500;
+      letter-spacing: -0.003em;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-spacer { flex: 1; }
+    .nav-cta {
+      padding: 9px 16px;
+      background: var(--green);
+      color: var(--surface);
+      font-size: 14px; font-weight: 600;
+      border-radius: 8px;
+      letter-spacing: -0.003em;
+      transition: background 180ms;
+    }
+    .nav-cta:hover { background: var(--green-lift); }
+
+    /* ── Hero ────────────────────────────────────────────────────────── */
+    .hero {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px 32px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--green);
+      padding: 6px 12px;
+      border: 1px solid var(--green-soft);
+      border-radius: 999px;
+      margin-bottom: 28px;
+      background: rgba(95, 115, 85, 0.06);
+      white-space: nowrap;
+    }
+    .hero-title {
+      font-size: 72px;
+      font-weight: 600;
+      letter-spacing: -0.028em;
+      line-height: 1.02;
+      color: var(--green-deep);
+      margin: 0 0 22px;
+    }
+    .hero-title em {
+      font-family: 'Newsreader', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--green);
+    }
+    .hero-sub {
+      font-size: 19px;
+      line-height: 1.55;
+      color: var(--muted);
+      letter-spacing: -0.005em;
+      margin: 0 0 36px;
+      max-width: 480px;
+    }
+    .hero-form {
+      display: flex;
+      gap: 8px;
+      max-width: 460px;
+      padding: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 8px 24px rgba(36, 55, 70, 0.06);
+    }
+    .hero-form input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--ink);
+      letter-spacing: -0.003em;
+    }
+    .hero-form input::placeholder { color: #9aa19a; }
+    .hero-form button {
+      padding: 12px 22px;
+      background: var(--green);
+      color: var(--surface);
+      border: none;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.003em;
+      border-radius: 9px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 180ms;
+    }
+    .hero-form button:hover { background: var(--green-lift); }
+    .hero-form button svg { width: 14px; height: 14px; }
+    .hero-meta {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-meta::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(95, 115, 85, 0.2);
+    }
+
+    /* Hero animation embed */
+    .hero-stage {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px -20px rgba(36, 55, 70, 0.18), 0 8px 24px -8px rgba(36, 55, 70, 0.08);
+    }
+    .hero-stage iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    /* ── Section base ────────────────────────────────────────────────── */
+    section { padding: 96px 32px; }
+    .container { max-width: var(--max); margin: 0 auto; }
+    .section-head { max-width: 720px; margin: 0 auto 64px; text-align: center; }
+    .section-eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--green);
+      margin: 0 0 18px;
+    }
+    .section-title {
+      font-size: 44px;
+      font-weight: 600;
+      letter-spacing: -0.022em;
+      line-height: 1.08;
+      color: var(--green-deep);
+      margin: 0 0 18px;
+    }
+    .section-title em {
+      font-family: 'Newsreader', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--green);
+    }
+    .section-sub {
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--muted);
+      letter-spacing: -0.003em;
+      margin: 0;
+    }
+
+    /* ── Features ────────────────────────────────────────────────────── */
+    .features-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature {
+      padding: 36px 32px 40px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: transform 280ms, border-color 280ms;
+    }
+    .feature:hover { transform: translateY(-3px); border-color: var(--green-soft); }
+    .feature-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--green);
+    }
+    .feature-tag::before {
+      content: '';
+      width: 12px; height: 1.5px;
+      background: var(--green);
+      display: inline-block;
+    }
+    .feature h3 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.012em;
+      color: var(--ink);
+    }
+    .feature p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--muted);
+      letter-spacing: -0.003em;
+    }
+    .feature-visual {
+      align-self: stretch;
+      aspect-ratio: 1 / 1;
+      max-width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .feature-visual svg { width: 100%; height: 100%; }
+
+    /* ── Workspace section ───────────────────────────────────────────── */
+    .workspace { background: var(--bg-soft); }
+    .workspace-mock {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 30px 60px -20px rgba(36, 55, 70, 0.18);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .workspace-mock-window {
+      background: var(--bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .workspace-mock-bar {
+      display: flex; align-items: center;
+      padding: 10px 14px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .workspace-mock-bar .dots { display: flex; gap: 6px; }
+    .workspace-mock-bar .dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+    .workspace-mock-bar .url {
+      flex: 1;
+      padding: 6px 10px;
+      background: var(--bg);
+      border-radius: 6px;
+      font-size: 11.5px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+    .workspace-mock-body {
+      aspect-ratio: 16 / 10;
+      position: relative;
+    }
+    .workspace-mock-body iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+
+    /* ── Why / how ───────────────────────────────────────────────────── */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 64px;
+    }
+    .pillar {
+      padding: 28px 4px 0;
+      border-top: 1px solid var(--border);
+    }
+    .pillar-num {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
+      letter-spacing: 0.16em;
+      margin-bottom: 14px;
+    }
+    .pillar h4 {
+      margin: 0 0 12px;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.008em;
+      color: var(--ink);
+    }
+    .pillar p {
+      margin: 0;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    /* ── Beta perks ──────────────────────────────────────────────────── */
+    .beta-section {
+      background: var(--green-deep);
+      color: #ECEFE8;
+      position: relative;
+      overflow: hidden;
+    }
+    .beta-section .section-eyebrow { color: var(--green-soft); }
+    .beta-section .section-title { color: #F2F4ED; }
+    .beta-section .section-title em { color: var(--green-soft); }
+    .beta-section .section-sub { color: rgba(236, 239, 232, 0.78); }
+    .perks {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      max-width: 880px;
+      margin: 0 auto;
+    }
+    .perk {
+      display: flex; gap: 16px;
+      padding: 22px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+    }
+    .perk-icon {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      background: rgba(142, 161, 129, 0.18);
+      border: 1px solid rgba(142, 161, 129, 0.35);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green-soft);
+    }
+    .perk-icon svg { width: 18px; height: 18px; }
+    .perk h4 { margin: 0 0 5px; font-size: 16px; font-weight: 600; letter-spacing: -0.005em; color: #F2F4ED; }
+    .perk p { margin: 0; font-size: 14px; line-height: 1.5; color: rgba(236, 239, 232, 0.72); }
+
+    /* Decorative HSTs in beta section */
+    .beta-decor {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.07;
+    }
+    .beta-decor.tl { top: -40px; left: -40px; transform: rotate(15deg); }
+    .beta-decor.br { bottom: -60px; right: -60px; transform: rotate(-12deg); }
+
+    /* ── Final CTA ───────────────────────────────────────────────────── */
+    .cta-section {
+      background: var(--bg-soft);
+      text-align: center;
+    }
+    .cta-card {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 56px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 30px 60px -20px rgba(36, 55, 70, 0.10);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-card h2 {
+      font-size: 56px;
+      font-weight: 600;
+      letter-spacing: -0.028em;
+      line-height: 1.02;
+      color: var(--green-deep);
+      margin: 0 0 16px;
+    }
+    .cta-card h2 em {
+      font-family: 'Newsreader', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--green);
+    }
+    .cta-card p {
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 460px;
+      margin: 0 auto 32px;
+    }
+    .cta-card .hero-form { margin: 0 auto; }
+
+    /* ── Footer ──────────────────────────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 56px 32px 36px;
+    }
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 36px;
+    }
+    .footer-brand p {
+      margin: 16px 0 0;
+      font-size: 13.5px;
+      color: var(--muted);
+      max-width: 280px;
+      line-height: 1.55;
+    }
+    .footer-col h5 {
+      margin: 0 0 14px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { font-size: 14px; color: var(--ink); }
+    .footer-col a:hover { color: var(--green); }
+    .footer-bottom {
+      max-width: var(--max);
+      margin: 36px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 56px 24px; }
+      .hero-title { font-size: 48px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pillars { grid-template-columns: 1fr; }
+      .perks { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      section { padding: 64px 24px; }
+      .section-title { font-size: 32px; }
+      .cta-card { padding: 56px 32px; }
+      .cta-card h2 { font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ─────────────────── NAV ─────────────────── -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#top"><img class="nav-logo" src="assets/patchworx-lockup.png" alt="Patch Worx"></a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#workspace">The workspace</a>
+        <a href="#beta">Beta</a>
+      </div>
+      <div class="nav-spacer"></div>
+      <a href="#waitlist" class="nav-cta">Become a tester</a>
+    </div>
+  </nav>
+
+  <!-- ─────────────────── HERO ─────────────────── -->
+  <section class="hero" id="top">
+    <div>
+      <span class="hero-eyebrow">Now recruiting beta testers</span>
+      <h1 class="hero-title">Design the quilt.<br/><em>We do the math.</em></h1>
+      <p class="hero-sub">PatchWorx is a browser-based design tool for quilters. Piece blocks from squares, half-square triangles, rectangles, and flying geese. Lay them out with sashing and borders. The second you're done, PatchWorx hands you a print-ready PDF pattern, complete with cutting list, yardage, and step-by-step methods. Works in any browser. Works on iPad. No software to install.</p>
+      <form class="hero-form" onsubmit="event.preventDefault(); this.querySelector('button span').textContent='You\u2019re on the list.'; this.querySelector('input').disabled=true;">
+        <input type="email" placeholder="you@example.com" required>
+        <button type="submit">
+          <span>Send my invite</span>
+          <svg viewBox="0 0 18 18" fill="none"><path d="M3 9h11M9 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+      <div class="hero-meta">Free for beta testers · Expect a few rough edges · We're listening</div>
+    </div>
+    <div class="hero-stage" aria-label="Animated preview of the Patch Worx app">
+      <iframe src="teaser.html" title="Patch Worx teaser" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- ─────────────────── FEATURES ─────────────────── -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-eyebrow">What's in the box</p>
+        <h2 class="section-title">Design like a quilter. <em>Publish like a pro.</em></h2>
+        <p class="section-sub">PatchWorx walks the whole path with you, from the first pieced unit to a print-ready, sewable pattern, with the fabric math handled the whole way.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-visual">
+            <!-- Block icon: 4-patch with HSTs forming a sawtooth star center -->
+            <svg viewBox="0 0 100 100">
+              <rect width="100" height="100" fill="#FFFFFF"/>
+              <!-- Outer corners: HSTs -->
+              <polygon points="0,0 50,0 0,50" fill="#5F7355"/>
+              <polygon points="100,0 50,0 100,50" fill="#5F7355"/>
+              <polygon points="0,100 50,100 0,50" fill="#5F7355"/>
+              <polygon points="100,100 50,100 100,50" fill="#5F7355"/>
+              <!-- Center diamond -->
+              <polygon points="50,15 85,50 50,85 15,50" fill="#3F4E37"/>
+              <polygon points="50,30 70,50 50,70 30,50" fill="#F2EADA"/>
+              <!-- grid lines -->
+              <line x1="50" y1="0" x2="50" y2="100" stroke="rgba(0,0,0,0.06)" stroke-width="0.6"/>
+              <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(0,0,0,0.06)" stroke-width="0.6"/>
+            </svg>
+          </div>
+          <span class="feature-tag">Block</span>
+          <h3>Piece blocks from the shapes you actually use.</h3>
+          <p>Squares, half-square triangles, rectangles, flying geese. Drop them on a grid, rotate, mirror, recolor. Save a block once and reuse it everywhere. Construction diagrams included.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-visual">
+            <!-- Quilt icon: 3x3 grid of mini blocks -->
+            <svg viewBox="0 0 100 100">
+              <rect width="100" height="100" fill="#FFFFFF"/>
+              <g>
+                <!-- Row 1 -->
+                <polygon points="0,0 32,0 0,32" fill="#5F7355"/><polygon points="32,0 32,32 0,32" fill="#F2EADA"/>
+                <rect x="34" y="0" width="32" height="32" fill="#E4D6BC"/>
+                <polygon points="100,0 68,0 100,32" fill="#5F7355"/><polygon points="68,0 68,32 100,32" fill="#F2EADA"/>
+                <!-- Row 2 -->
+                <rect x="0" y="34" width="32" height="32" fill="#C18A6E"/>
+                <polygon points="34,34 66,34 34,66" fill="#3F4E37"/><polygon points="66,34 66,66 34,66" fill="#F2EADA"/>
+                <rect x="68" y="34" width="32" height="32" fill="#C18A6E"/>
+                <!-- Row 3 -->
+                <polygon points="0,68 32,68 0,100" fill="#F2EADA"/><polygon points="32,68 32,100 0,100" fill="#5F7355"/>
+                <rect x="34" y="68" width="32" height="32" fill="#E4D6BC"/>
+                <polygon points="100,68 68,68 100,100" fill="#F2EADA"/><polygon points="68,68 68,100 100,100" fill="#5F7355"/>
+              </g>
+              <!-- grid lines -->
+              <line x1="33" y1="0" x2="33" y2="100" stroke="rgba(0,0,0,0.06)" stroke-width="0.6"/>
+              <line x1="67" y1="0" x2="67" y2="100" stroke="rgba(0,0,0,0.06)" stroke-width="0.6"/>
+              <line x1="0" y1="33" x2="100" y2="33" stroke="rgba(0,0,0,0.06)" stroke-width="0.6"/>
+              <line x1="0" y1="67" x2="100" y2="67" stroke="rgba(0,0,0,0.06)" stroke-width="0.6"/>
+            </svg>
+          </div>
+          <span class="feature-tag">Quilt</span>
+          <h3>Lay out the whole top, sashing and all.</h3>
+          <p>Tile your blocks across any grid size. Alternate plain and pieced, rotate them into pinwheels, drop in sashing, cornerstones, and borders. See the finished quilt the second you place a block.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-visual">
+            <!-- Cutting list icon: stacked color bars w/ measurements -->
+            <svg viewBox="0 0 100 100">
+              <rect width="100" height="100" fill="#FFFFFF"/>
+              <g font-family="Inter, monospace" font-size="6" fill="#667066">
+                <rect x="14" y="18" width="60" height="10" fill="#5F7355"/>
+                <text x="78" y="26">12¼"</text>
+                <rect x="14" y="32" width="48" height="10" fill="#C18A6E"/>
+                <text x="78" y="40">9⅞"</text>
+                <rect x="14" y="46" width="68" height="10" fill="#E4D6BC"/>
+                <text x="64" y="64" fill="#1F2923" font-weight="600">+ 6 more</text>
+                <rect x="14" y="60" width="38" height="10" fill="#3F4E37"/>
+                <rect x="14" y="74" width="54" height="10" fill="#8EA181"/>
+              </g>
+            </svg>
+          </div>
+          <span class="feature-tag">Pattern PDF</span>
+          <h3>A print-ready pattern, ready to publish.</h3>
+          <p>When the design is done, PatchWorx hands you a finished PDF: accurate cut sizes, fabric yardage, and a step-by-step methods section.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────── WORKSPACE ─────────────────── -->
+  <section class="workspace" id="workspace">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-eyebrow">Why PatchWorx</p>
+        <h2 class="section-title">A canvas that thinks <em>like a quilter.</em></h2>
+        <p class="section-sub">Fabric math is the tedious part. PatchWorx does it the moment your block is finished, in the browser, free, with no $240 install standing in the way.</p>
+      </div>
+
+      <div class="workspace-mock">
+        <div class="workspace-mock-window">
+          <div class="workspace-mock-bar">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="url">app.patchworx.studio / untitled · 8 × 8</div>
+          </div>
+          <div class="workspace-mock-body">
+            <iframe src="teaser.html" title="Patch Worx workspace" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-num">01</div>
+          <h4>The math, handled.</h4>
+          <p>Cut sizes, HST starting squares, seam allowances, yardage. The moment your design is done, the numbers are too. No spreadsheets, no scrap-paper math, no nasty surprises at the cutting table.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">02</div>
+          <h4>Just open a tab.</h4>
+          <p>Runs in any browser. Works on a laptop, works on your iPad. No installer, no license key, no $240 sticker shock, no clunky desktop UI from a different decade.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">03</div>
+          <h4>Built with you, not for you.</h4>
+          <p>The block library is growing. Construction diagrams are in. Custom-block design is on the way. Beta testers tell us what to build next, and we ship it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────── BETA PERKS ─────────────────── -->
+  <section class="beta-section" id="beta">
+    <!-- Decorative HSTs -->
+    <svg class="beta-decor tl" width="200" height="200" viewBox="0 0 100 100" aria-hidden="true">
+      <polygon points="0,0 100,0 0,100" fill="#FFFFFF"/>
+      <polygon points="100,0 100,100 0,100" fill="#8EA181"/>
+    </svg>
+    <svg class="beta-decor br" width="240" height="240" viewBox="0 0 100 100" aria-hidden="true">
+      <polygon points="0,0 100,0 0,100" fill="#8EA181"/>
+      <polygon points="100,0 100,100 0,100" fill="#FFFFFF"/>
+    </svg>
+
+    <div class="container" style="position: relative;">
+      <div class="section-head">
+        <p class="section-eyebrow">What you get</p>
+        <h2 class="section-title">A seat in the <em>first cohort.</em></h2>
+        <p class="section-sub">Beta means rough edges, and that's the point. Founding testers get in early, leave fingerprints all over the final tool, and help us ship the version we actually want to launch.</p>
+      </div>
+
+      <div class="perks">
+        <div class="perk">
+          <div class="perk-icon">
+            <svg viewBox="0 0 18 18" fill="none"><path d="M9 1.5l2.3 4.7 5.2.8-3.75 3.65.9 5.2L9 13.4l-4.65 2.45.9-5.2L1.5 7l5.2-.8L9 1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h4>Sneak in before launch</h4>
+            <p>Be among the first quilters to design with PatchWorx. Your blocks, quilts, and PDFs travel with you when we open the doors to everyone else.</p>
+          </div>
+        </div>
+
+        <div class="perk">
+          <div class="perk-icon">
+            <svg viewBox="0 0 18 18" fill="none"><path d="M3 14V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H7l-4 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h4>We answer your DMs</h4>
+            <p>Talk straight to the people building it. Found a bug, missing a shape, dreaming of a feature? Send a note. We read every one.</p>
+          </div>
+        </div>
+
+        <div class="perk">
+          <div class="perk-icon">
+            <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M6 9.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h4>Free, the whole beta</h4>
+            <p>No card on file. Use every tool, export every PDF, design every quilt you want. Beta is on the house, for as long as it lasts.</p>
+          </div>
+        </div>
+
+        <div class="perk">
+          <div class="perk-icon">
+            <svg viewBox="0 0 18 18" fill="none"><path d="M3 9l6-6 6 6M5 8v6h8V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h4>Your name in the release notes</h4>
+            <p>Founding testers vote on what gets built next. When a feature you asked for ships, your handle goes in the release notes that ship it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────── FINAL CTA ─────────────────── -->
+  <section class="cta-section" id="waitlist">
+    <div class="container">
+      <div class="cta-card">
+        <h2>Want in <em>while it's still rough?</em></h2>
+        <p>We're inviting testers in small batches so we can listen well. Drop your email and we'll send your invite the next time a spot opens up.</p>
+        <form class="hero-form" onsubmit="event.preventDefault(); this.querySelector('button span').textContent='You\u2019re on the list.'; this.querySelector('input').disabled=true;">
+          <input type="email" placeholder="you@example.com" required>
+          <button type="submit">
+            <span>Send my invite</span>
+            <svg viewBox="0 0 18 18" fill="none"><path d="M3 9h11M9 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────── FOOTER ─────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/patchworx-lockup.png" alt="Patch Worx" style="height: 34px;">
+        <p>A browser-based design tool for quilters. Built by makers, for makers, with the fabric math handled for you.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#workspace">Workspace</a></li>
+          <li><a href="#beta">Beta program</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Follow</h5>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Pinterest</a></li>
+          <li><a href="#">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Patch Worx · patchworx.studio</span>
+      <span>Made for quilters who love grids.</span>
+    </div>
+  </footer>
+</body>
+</html>
