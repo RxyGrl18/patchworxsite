@@ -337,6 +337,8 @@ function Stage({
   loop = true,
   autoplay = true,
   persistKey = 'animstage',
+  controls = true,
+  fit = 'contain',
   children,
 }) {
   const [time, setTime] = React.useState(() => {
@@ -364,11 +366,11 @@ function Stage({
     if (!stageRef.current) return;
     const el = stageRef.current;
     const measure = () => {
-      const barH = 44; // playback bar height
-      const s = Math.min(
-        el.clientWidth / width,
-        (el.clientHeight - barH) / height
-      );
+      const barH = controls ? 44 : 0; // playback bar height
+      const fitH = el.clientHeight - barH;
+      const s = fit === 'cover'
+        ? Math.max(el.clientWidth / width, fitH / height)
+        : Math.min(el.clientWidth / width, fitH / height);
       setScale(Math.max(0.05, s));
     };
     measure();
@@ -379,7 +381,7 @@ function Stage({
       ro.disconnect();
       window.removeEventListener('resize', measure);
     };
-  }, [width, height]);
+  }, [width, height, controls, fit]);
 
   // Animation loop
   React.useEffect(() => {
@@ -441,7 +443,7 @@ function Stage({
         position: 'absolute', inset: 0,
         display: 'flex', flexDirection: 'column',
         alignItems: 'center',
-        background: '#0a0a0a',
+        background: controls ? '#0a0a0a' : background,
         fontFamily: 'Inter, system-ui, sans-serif',
       }}
     >
@@ -462,7 +464,7 @@ function Stage({
             transform: `scale(${scale})`,
             transformOrigin: 'center',
             flexShrink: 0,
-            boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+            boxShadow: controls ? '0 20px 60px rgba(0,0,0,0.4)' : 'none',
             overflow: 'hidden',
           }}
         >
@@ -473,16 +475,18 @@ function Stage({
       </div>
 
       {/* Playback bar — stacked below canvas, never overlapping */}
-      <PlaybackBar
-        time={displayTime}
-        actualTime={time}
-        duration={duration}
-        playing={playing}
-        onPlayPause={() => setPlaying(p => !p)}
-        onReset={() => { setTime(0); }}
-        onSeek={(t) => setTime(t)}
-        onHover={(t) => setHoverTime(t)}
-      />
+      {controls && (
+        <PlaybackBar
+          time={displayTime}
+          actualTime={time}
+          duration={duration}
+          playing={playing}
+          onPlayPause={() => setPlaying(p => !p)}
+          onReset={() => { setTime(0); }}
+          onSeek={(t) => setTime(t)}
+          onHover={(t) => setHoverTime(t)}
+        />
+      )}
     </div>
   );
 }
