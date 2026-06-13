@@ -447,33 +447,47 @@
     footer {
       background: var(--bg);
       border-top: 1px solid var(--border);
-      padding: 56px 32px 36px;
+      padding: 0 32px 36px;
+    }
+    .footer-sawtooth {
+      display: block;
+      width: 100%;
+      height: 14px;
+      margin-bottom: 48px;
     }
     .footer-inner {
       max-width: var(--max);
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       gap: 36px;
+      flex-wrap: wrap;
     }
     .footer-brand p {
       margin: 16px 0 0;
       font-size: 13.5px;
       color: var(--muted);
-      max-width: 280px;
+      max-width: 300px;
       line-height: 1.55;
     }
-    .footer-col h5 {
-      margin: 0 0 14px;
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 600;
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 28px;
     }
-    .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-    .footer-col a { font-size: 14px; color: var(--ink); }
-    .footer-col a:hover { color: var(--green); }
+    .footer-links a {
+      font-size: 14px;
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .footer-links a:hover { color: var(--green); }
+    .footer-links svg { width: 15px; height: 15px; }
     .footer-bottom {
       max-width: var(--max);
       margin: 36px auto 0;
@@ -491,7 +505,8 @@
       .features-grid { grid-template-columns: 1fr; }
       .pillars { grid-template-columns: 1fr; }
       .perks { grid-template-columns: 1fr; }
-      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .footer-inner { flex-direction: column; }
+      .footer-links { flex-wrap: wrap; gap: 20px; }
       .nav-links { display: none; }
       section { padding: 64px 24px; }
       .section-title { font-size: 32px; }
@@ -519,10 +534,10 @@
   <section class="hero" id="top">
     <div>
       <span class="hero-eyebrow">Now recruiting beta testers</span>
-      <h1 class="hero-title">Design the quilt.<br/><em>We do the math.</em></h1>
+      <h1 class="hero-title">You Design the Quilt.<br/><em>We do the math.</em></h1>
       <p class="hero-sub">PatchWorx is a browser-based design tool for quilters. Piece blocks from squares, half-square triangles, rectangles, and flying geese. Lay them out with sashing and borders. The second you're done, PatchWorx hands you a print-ready PDF pattern, complete with cutting list, yardage, and step-by-step methods. Works in any browser. Works on iPad. No software to install.</p>
-      <form class="hero-form" onsubmit="event.preventDefault(); this.querySelector('button span').textContent='You\u2019re on the list.'; this.querySelector('input').disabled=true;">
-        <input type="email" placeholder="you@example.com" required>
+      <form class="hero-form" onsubmit="return pwSignup(event, this);">
+        <input type="email" name="entry.698096867" placeholder="you@example.com" required>
         <button type="submit">
           <span>Send my invite</span>
           <svg viewBox="0 0 18 18" fill="none"><path d="M3 9h11M9 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -733,8 +748,8 @@
       <div class="cta-card">
         <h2>Want in <em>while it's still rough?</em></h2>
         <p>We're inviting testers in small batches so we can listen well. Drop your email and we'll send your invite the next time a spot opens up.</p>
-        <form class="hero-form" onsubmit="event.preventDefault(); this.querySelector('button span').textContent='You\u2019re on the list.'; this.querySelector('input').disabled=true;">
-          <input type="email" placeholder="you@example.com" required>
+        <form class="hero-form" onsubmit="return pwSignup(event, this);">
+          <input type="email" name="entry.698096867" placeholder="you@example.com" required>
           <button type="submit">
             <span>Send my invite</span>
             <svg viewBox="0 0 18 18" fill="none"><path d="M3 9h11M9 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -746,40 +761,50 @@
 
   <!-- ─────────────────── FOOTER ─────────────────── -->
   <footer>
+    <svg class="footer-sawtooth" viewBox="0 0 1400 14" preserveAspectRatio="none" aria-hidden="true">
+      <pattern id="pw-sawtooth" width="28" height="14" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L14 14 L28 0 Z" fill="#5F7355" opacity="0.16"></path>
+      </pattern>
+      <rect width="1400" height="14" fill="url(#pw-sawtooth)"></rect>
+    </svg>
     <div class="footer-inner">
       <div class="footer-brand">
         <img src="assets/patchworx-lockup.png" alt="Patch Worx" style="height: 34px;">
         <p>A browser-based design tool for quilters. Built by makers, for makers, with the fabric math handled for you.</p>
       </div>
-      <div class="footer-col">
-        <h5>Product</h5>
-        <ul>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#workspace">Workspace</a></li>
-          <li><a href="#beta">Beta program</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Company</h5>
-        <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Journal</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Follow</h5>
-        <ul>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">Pinterest</a></li>
-          <li><a href="#">YouTube</a></li>
-        </ul>
-      </div>
+      <ul class="footer-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#workspace">The Workspace</a></li>
+        <li><a href="#beta">Beta</a></li>
+        <li><a href="https://www.instagram.com/patchworx.studio" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"></circle><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"></circle></svg>@patchworx.studio</a></li>
+      </ul>
     </div>
     <div class="footer-bottom">
       <span>© 2026 Patch Worx · patchworx.studio</span>
       <span>Made for quilters who love grids.</span>
     </div>
   </footer>
+  <script>
+    // Submits signups to the Patch Worx Beta Waitlist Google Form.
+    function pwSignup(e, form) {
+      e.preventDefault();
+      var input = form.querySelector('input');
+      var email = input.value.trim();
+      if (!email) { return false; }
+      var btn = form.querySelector('button');
+      btn.disabled = true;
+      var data = new FormData();
+      data.append('entry.698096867', email);
+      fetch('https://docs.google.com/forms/d/e/1FAIpQLScMG0gbOFFWz71LhdvIGPriSxWd0TDUAsPw4aTAMjLvUxZ-7g/formResponse', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: data
+      }).finally(function () {
+        form.querySelector('button span').textContent = 'You\u2019re on the list.';
+        input.disabled = true;
+      });
+      return false;
+    }
+  </script>
 </body>
 </html>
